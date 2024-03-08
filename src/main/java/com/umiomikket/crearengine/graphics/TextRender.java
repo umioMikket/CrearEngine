@@ -1,6 +1,6 @@
 package com.umiomikket.crearengine.graphics;
 
-import com.umiomikket.crearengine.managers.RenderManager;
+import com.umiomikket.crearengine.abstact.RenderAbstract;
 import com.umiomikket.crearengine.utils.vectors.Vector;
 import com.umiomikket.crearengine.utils.vectors.VectorRotated;
 
@@ -8,7 +8,7 @@ import java.awt.*;
 import java.io.File;
 
 public class TextRender {
-    private final RenderManager renderManager;
+    private final RenderAbstract render;
 
     private String text;
     private Color color;
@@ -17,8 +17,8 @@ public class TextRender {
     public final VectorRotated positionRotated;
     public final Vector offset;
 
-    public TextRender(RenderManager renderManager) {
-        this.renderManager = renderManager;
+    public TextRender(RenderAbstract render) {
+        this.render = render;
 
         text = "";
         color = Color.WHITE;
@@ -53,7 +53,7 @@ public class TextRender {
     }
 
     public Dimension getTextSize() {
-        Graphics2D g2d = renderManager.getGraphicsScreen();
+        Graphics2D g2d = render.getGraphics();
         g2d.setFont(font);
         FontMetrics fm = g2d.getFontMetrics();
         g2d.dispose();
@@ -62,7 +62,7 @@ public class TextRender {
     }
 
     public int getTextWidth() {
-        Graphics2D g2d = renderManager.getGraphicsScreen();
+        Graphics2D g2d = render.getGraphics();
         g2d.setFont(font);
         FontMetrics fm = g2d.getFontMetrics();
         g2d.dispose();
@@ -71,7 +71,7 @@ public class TextRender {
     }
 
     public int getTextHeight() {
-        Graphics2D g2d = renderManager.getGraphicsScreen();
+        Graphics2D g2d = render.getGraphics();
         g2d.setFont(font);
         FontMetrics fm = g2d.getFontMetrics();
         g2d.dispose();
@@ -84,7 +84,7 @@ public class TextRender {
     public void render(double scaleX, double scaleY) {
         if (text == null) return;
 
-        Graphics2D g2d = renderManager.getGraphicsScreen();
+        Graphics2D g2d = render.getGraphics();
 
         g2d.translate(positionRotated.getX() - offset.getX(), positionRotated.getY() - offset.getY());
         g2d.rotate(Math.toRadians(positionRotated.getRotation()), offset.getX(), offset.getY());

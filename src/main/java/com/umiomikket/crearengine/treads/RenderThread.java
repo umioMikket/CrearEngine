@@ -37,8 +37,10 @@ public class RenderThread extends Thread {
     }
 
     public void render(int frameNumber, boolean isEndFrame) {
-        gameBox.renderManager.clearScreen();
-        gameBox.playRenderListeners(frameNumber, isEndFrame);
-        gameBox.renderManager.updateScreen();
+        if (gameBox.window.canvas.getGraphics() == null) return;
+
+        gameBox.renderManager.clear();
+        gameBox.playRender(frameNumber, isEndFrame);
+        gameBox.renderManager.update();
     }
 }

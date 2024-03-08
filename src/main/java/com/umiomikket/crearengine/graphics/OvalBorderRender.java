@@ -1,6 +1,6 @@
 package com.umiomikket.crearengine.graphics;
 
-import com.umiomikket.crearengine.managers.RenderManager;
+import com.umiomikket.crearengine.abstact.RenderAbstract;
 import com.umiomikket.crearengine.utils.sizes.Size;
 import com.umiomikket.crearengine.utils.vectors.Vector;
 import com.umiomikket.crearengine.utils.vectors.VectorRotated;
@@ -8,7 +8,7 @@ import com.umiomikket.crearengine.utils.vectors.VectorRotated;
 import java.awt.*;
 
 public class OvalBorderRender {
-    private final RenderManager renderManager;
+    private final RenderAbstract render;
 
     private Color color;
     public final VectorRotated positionRotated;
@@ -16,8 +16,8 @@ public class OvalBorderRender {
     public final Size size;
     private int strokeSize;
 
-    public OvalBorderRender(RenderManager renderManager) {
-        this.renderManager = renderManager;
+    public OvalBorderRender(RenderAbstract render) {
+        this.render = render;
 
         color = Color.WHITE;
         positionRotated = new VectorRotated(0, 0, 0f);
@@ -49,7 +49,7 @@ public class OvalBorderRender {
     public void render(double scaleX, double scaleY) {
         if (scaleX == 0 || scaleY == 0) return;
 
-        Graphics2D g2d = renderManager.getGraphicsScreen();
+        Graphics2D g2d = render.getGraphics();
 
         g2d.translate(positionRotated.getX() - offset.getX(), positionRotated.getY() - offset.getY());
         g2d.rotate(Math.toRadians(positionRotated.getRotation()), offset.getX(), offset.getY());

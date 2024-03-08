@@ -2,20 +2,23 @@ package com.umiomikket.crearengine;
 
 import com.umiomikket.crearengine.collisions.RectangleCollision;
 import com.umiomikket.crearengine.graphics.*;
-import com.umiomikket.crearengine.listeners.RenderListener;
+import com.umiomikket.crearengine.graphics.light.LightMap;
 import com.umiomikket.crearengine.managers.InputManager;
-import com.umiomikket.crearengine.managers.RenderManager;
+import com.umiomikket.crearengine.graphics.light.LightRender;
+import com.umiomikket.crearengine.utils.inTools.GraphicManager;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class Main extends RenderListener {
+public class Main extends GameListener {
+    public static LightMap lightMap;
     public static RectangleRender rr;
     public static RectangleRender orr;
     public static TextRender tr;
     public static RectangleCollision rc;
     public static RectangleCollision orc;
-
+    public static GraphicManager gm;
+    
     public static float angle = 34f;
 
     public static float x = 100f, y = 100f;
@@ -31,10 +34,16 @@ public class Main extends RenderListener {
     public static int ohp = 10;
 
     public static void main(String[] args) {
-        GameBox gameBox = new GameBox();
-        tr = gameBox.renderManager.createText();
+        GameBox gameBox = new GameBox(new Main());
+        gm = gameBox.renderManager.graphicsManager;
+        tr = gm.createText();
 
-        rr = gameBox.renderManager.createRectangle();
+        lightMap = new LightMap(gameBox.renderManager);
+        lightMap.size.setSize(gameBox.renderManager.getWidth(), gameBox.renderManager.getHeight());
+        lightMap.setColor(new Color(0, 0, 0, 255));
+        lightMap.saveImage();
+
+        rr = gm.createRectangle();
         rr.setColor(new Color(128, 255, 99, 205));
         rr.size.setSize(50, 50);
         rr.offset.setPosition(25, 25);
@@ -43,7 +52,7 @@ public class Main extends RenderListener {
         rc.size.setSize(50f, 50f);
         rc.offset.setPosition(25f, 25f);
 
-        orr = gameBox.renderManager.createRectangle();
+        orr = gm.createRectangle();
         orr.setColor(new Color(121, 202, 255, 219));
         orr.size.setSize(50, 50);
         orr.offset.setPosition(25, 25);
@@ -52,10 +61,10 @@ public class Main extends RenderListener {
         orc.size.setSize(50f, 50f);
         orc.offset.setPosition(25f, 25f);
 
-        gameBox.addRenderListener(new Main());
-        gameBox.renderManager.setRenderMode(RenderManager.MODE_RENDER_DEFAULT);
         gameBox.run();
     }
+
+    public void update(GameBox gameBox, int updateNumber, boolean endUpdate) {}
 
     public void render(GameBox gameBox, int frameNumber, boolean endFrame) {
         angle += 0.1;
@@ -115,16 +124,38 @@ public class Main extends RenderListener {
             orr.render();
         }
 
-        RectangleRender rr = gameBox.renderManager.createRectangle();
+        RectangleRender rr = gm.createRectangle();
         rr.positionRotated.setPosition(300, 300);
 
-        gameBox.renderManager.setAntiAliasing(true);
+        gameBox.renderManager.renderingSettings.setAntiAliasing(true);
         rr.positionRotated.setRotation(angle);
-        gameBox.renderManager.setAntiAliasingText(false);
+        gameBox.renderManager.renderingSettings.setAntiAliasingText(false);
 
         rr.size.setSize(100, 100);
         rr.offset.setPosition(50, 50);
         rr.setColor(Color.GRAY);
         rr.render();
+
+        lightMap.clear();
+
+        LightRender dlr = new LightRender(lightMap);
+
+        dlr.setColor(new Color(255, 214, 152));
+        dlr.setInnerAlpha(1f);
+        dlr.setOuterAlpha(0f);
+        dlr.position.setPosition(gameBox.inputManager.getMouseX(), gameBox.inputManager.getMouseY());
+        dlr.setRadius(100);
+        dlr.render();
+
+        dlr.setColor(new Color(152, 231, 255));
+        dlr.position.setPosition(300, 300);
+        dlr.render();
+
+        lightMap.render();
+
+        if (endFrame) gameBox.windowManager.setTitle("FPS " + frameNumber);
     }
+
+    public void start(GameBox gameBox) {}
+    public void exit(GameBox gameBox) { gameBox.exit(); }
 }

@@ -1,19 +1,19 @@
 package com.umiomikket.crearengine.graphics;
 
-import com.umiomikket.crearengine.managers.RenderManager;
+import com.umiomikket.crearengine.abstact.RenderAbstract;
 import com.umiomikket.crearengine.utils.vectors.Vector;
 
 import java.awt.*;
 
 public class TriangleBorderRender {
-    private final RenderManager renderManager;
+    private final RenderAbstract render;
 
     private Color color;
     public final Vector point1, point2, point3;
     private int strokeSize;
 
-    public TriangleBorderRender(RenderManager renderManager) {
-        this.renderManager = renderManager;
+    public TriangleBorderRender(RenderAbstract render) {
+        this.render = render;
 
         color = Color.WHITE;
         point1 = new Vector(0, 0);
@@ -30,7 +30,7 @@ public class TriangleBorderRender {
     public void setStrokeSize(int strokeSize) { this.strokeSize = strokeSize; }
 
     public void render() {
-        Graphics2D g2d = renderManager.getGraphicsScreen();
+        Graphics2D g2d = render.getGraphics();
 
         g2d.setColor(color);
         g2d.setStroke(new BasicStroke(strokeSize));

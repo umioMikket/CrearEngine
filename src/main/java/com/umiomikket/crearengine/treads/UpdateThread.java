@@ -22,7 +22,7 @@ public class UpdateThread implements Runnable {
             lastTime = nowTime;
 
             while (delta >= 1) {
-                gameBox.playUpdateListeners(updateNumber, false);
+                gameBox.playUpdate(updateNumber, false);
                 updateNumber++;
                 delta -= 1;
             }
@@ -30,7 +30,7 @@ public class UpdateThread implements Runnable {
             if (System.currentTimeMillis() - lastTimer >= 1000) {
                 lastTimer += 1000;
                 updateNumber++;
-                gameBox.playUpdateListeners(updateNumber, true);
+                gameBox.playUpdate(updateNumber, true);
                 updateNumber = 0;
             }
         }

@@ -1,6 +1,6 @@
 package com.umiomikket.crearengine.graphics;
 
-import com.umiomikket.crearengine.managers.RenderManager;
+import com.umiomikket.crearengine.abstact.RenderAbstract;
 import com.umiomikket.crearengine.utils.sizes.Size;
 import com.umiomikket.crearengine.utils.vectors.Vector;
 import com.umiomikket.crearengine.utils.vectors.VectorRotated;
@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 public class ImageTileRender {
-    private final RenderManager renderManager;
+    private final RenderAbstract render;
     private BufferedImage image;
     private BufferedImage subImage;
     private boolean isSaveSubImage;
@@ -24,8 +24,8 @@ public class ImageTileRender {
     public final Size tileSize;
     public final Vector tileOffset;
 
-    public ImageTileRender(RenderManager renderManager) {
-        this.renderManager = renderManager;
+    public ImageTileRender(RenderAbstract render) {
+        this.render = render;
 
         positionRotated = new VectorRotated(0, 0, 0f);
         offset = new Vector(0, 0);
@@ -36,14 +36,16 @@ public class ImageTileRender {
     }
 
     public BufferedImage getImage() { return image; }
-    public void setImage(Image image) { this.image = (BufferedImage) image; }
-    public void setImage(BufferedImage image) { this.image = image; }
+    public void setImage(Image image) { this.image = (BufferedImage) image; saveSubImage(); }
+    public void setImage(BufferedImage image) { this.image = image; saveSubImage(); }
 
     public void setImage(String path) {
         image = null;
 
         try { image = ImageIO.read(new File(path)); }
         catch (Exception e) { e.printStackTrace(); }
+
+        saveSubImage();
     }
 
     public boolean hasSavedSubImage() { return isSaveSubImage; }
@@ -84,24 +86,14 @@ public class ImageTileRender {
         if (scaleX == 0 || scaleY == 0) return;
         if (tileSize.width == 0 || tileSize.height == 0) return;
 
-        Graphics2D g2d = renderManager.getGraphicsScreen();
+        Graphics2D g2d = render.getGraphics();
         AffineTransform transform = new AffineTransform();
         transform.translate(positionRotated.getX() - offset.getX(), positionRotated.getY() - offset.getY());
         transform.rotate(Math.toRadians(positionRotated.getRotation()), offset.getX(), offset.getY());
         transform.scale(scaleX, scaleY);
 
         if (isSaveSubImage) g2d.drawImage(subImage, transform, null);
-        else {
-            BufferedImage sImage = new BufferedImage(tileSize.width, tileSize.height, BufferedImage.TYPE_INT_RGB);
-            int xp = tilePosition.x - tileOffset.x, yp = tilePosition.y - tileOffset.getY();
-
-            for (int y = 0; y < tileSize.height; y++) {
-                for (int x = 0; x < tileSize.width; x++) {
-                    subImage.setRGB(x, y, image.getRGB(xp + x, yp + y));
-                }
-            }
-            g2d.drawImage(sImage, transform, null);
-        }
+        else { saveSubImage(); g2d.drawImage(subImage, transform, null); }
 
         g2d.dispose();
     }

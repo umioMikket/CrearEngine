@@ -21,18 +21,4 @@ public class TriangleCollision {
 
         return positions;
     }
-
-    public boolean touch(VectorFloat[] points) {
-        return CheckCollision.touch(
-            CheckCollision.toMassive(getVertices()),
-            CheckCollision.toMassive(points)
-        );
-    }
-
-    public boolean touch(float[][] points) {
-        return CheckCollision.touch(
-            CheckCollision.toMassive(getVertices()),
-            points
-        );
-    }
 }

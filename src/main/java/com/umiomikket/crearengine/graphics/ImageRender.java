@@ -1,6 +1,6 @@
 package com.umiomikket.crearengine.graphics;
 
-import com.umiomikket.crearengine.managers.RenderManager;
+import com.umiomikket.crearengine.abstact.RenderAbstract;
 import com.umiomikket.crearengine.utils.vectors.Vector;
 import com.umiomikket.crearengine.utils.vectors.VectorRotated;
 
@@ -11,14 +11,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 public class ImageRender {
-    private final RenderManager renderManager;
+    private final RenderAbstract render;
     private BufferedImage image;
 
     public final VectorRotated positionRotated;
     public final Vector offset;
 
-    public ImageRender(RenderManager renderManager) {
-        this.renderManager = renderManager;
+    public ImageRender(RenderAbstract render) {
+        this.render = render;
 
         positionRotated = new VectorRotated(0, 0, 0f);
         offset = new Vector(0, 0);
@@ -52,7 +52,7 @@ public class ImageRender {
         if (image == null) return;
         if (scaleX == 0 || scaleY == 0) return;
 
-        Graphics2D g2d = renderManager.getGraphicsScreen();
+        Graphics2D g2d = render.getGraphics();
         AffineTransform transform = new AffineTransform();
 
         transform.translate(positionRotated.getX() - offset.getX(), positionRotated.getY() - offset.getY());

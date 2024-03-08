@@ -1,10 +1,11 @@
 package com.umiomikket.crearengine.collisions;
 
+import com.umiomikket.crearengine.abstact.CollisionAbstract;
 import com.umiomikket.crearengine.utils.sizes.SizeFloat;
 import com.umiomikket.crearengine.utils.vectors.VectorFloat;
 import com.umiomikket.crearengine.utils.vectors.VectorRotatedFloat;
 
-public class RectangleCollision {
+public class RectangleCollision extends CollisionAbstract {
     public final VectorRotatedFloat positionRotated;
     public final SizeFloat size;
     public final VectorFloat offset;
@@ -34,19 +35,5 @@ public class RectangleCollision {
             new VectorFloat(centerX + (float) (pWidth * cos - pHeight * sin), centerY + (float) (pWidth * sin + pHeight * cos)),
             new VectorFloat(centerX + (float) (pX * cos - pHeight * sin), centerY + (float) (pX * sin + pHeight * cos))
         };
-    }
-
-    public boolean touch(VectorFloat[] points) {
-        return CheckCollision.touch(
-            CheckCollision.toMassive(getVertices()),
-            CheckCollision.toMassive(points)
-        );
-    }
-
-    public boolean touch(float[][] points) {
-        return CheckCollision.touch(
-            CheckCollision.toMassive(getVertices()),
-            points
-        );
     }
 }

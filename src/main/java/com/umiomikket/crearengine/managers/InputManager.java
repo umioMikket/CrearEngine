@@ -106,7 +106,10 @@ public class InputManager {
     }
 
     private class ComponentEvents implements ComponentListener {
-        public void componentResized(ComponentEvent e) { gameBox.renderManager.resizeScreen(); }
+        public void componentResized(ComponentEvent e) {
+            gameBox.renderManager.resize();
+        }
+
         public void componentMoved(ComponentEvent e) {}
 
         public void componentShown(ComponentEvent e) { isWindowShown = true; }

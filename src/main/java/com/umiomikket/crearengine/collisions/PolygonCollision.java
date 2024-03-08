@@ -12,21 +12,6 @@ public class PolygonCollision {
     }
 
     public VectorFloat[] getVertices() {
-        VectorFloat[] v = points.toArray(new VectorFloat[0]);
-        return v;
-    }
-
-    public boolean touch(VectorFloat[] points) {
-        return CheckCollision.touch(
-            CheckCollision.toMassive(getVertices()),
-            CheckCollision.toMassive(points)
-        );
-    }
-
-    public boolean touch(float[][] points) {
-        return CheckCollision.touch(
-            CheckCollision.toMassive(getVertices()),
-            points
-        );
+        return points.toArray(new VectorFloat[0]);
     }
 }

@@ -1,18 +1,18 @@
 package com.umiomikket.crearengine.graphics;
 
-import com.umiomikket.crearengine.managers.RenderManager;
+import com.umiomikket.crearengine.abstact.RenderAbstract;
 import com.umiomikket.crearengine.utils.vectors.Vector;
 
 import java.awt.*;
 
 public class TriangleRender {
-    private final RenderManager renderManager;
+    private final RenderAbstract render;
 
     private Color color;
     public final Vector point1, point2, point3;
 
-    public TriangleRender(RenderManager renderManager) {
-        this.renderManager = renderManager;
+    public TriangleRender(RenderAbstract render) {
+        this.render = render;
 
         color = Color.WHITE;
         point1 = new Vector(0, 0);
@@ -25,7 +25,7 @@ public class TriangleRender {
     public void setColor(int color) { this.color = new Color(color); }
 
     public void render() {
-        Graphics2D g2d = renderManager.getGraphicsScreen();
+        Graphics2D g2d = render.getGraphics();
 
         g2d.setColor(color);
         g2d.fillPolygon(
